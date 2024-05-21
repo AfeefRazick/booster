@@ -8,12 +8,14 @@ import clsx from "clsx";
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
 
+  const closeDropdown = () => setIsOpen(false);
+
   return (
     <>
-      <Overlay isOpen={isOpen} />
+      <Overlay isOpen={isOpen} onClick={closeDropdown} />
 
-      <header className="h-20 relative shadow w-full flex items-center justify-center">
-        <nav className="z-20 w-full px-6 sm:px-[5%] bg-white h-full flex items-center justify-between">
+      <header className="relative flex h-20 w-full items-center justify-center shadow">
+        <nav className="z-20 flex h-full w-full items-center justify-between bg-white px-6 sm:px-[5%]">
           <div className="flex items-center">
             <Logo />
             <div className="lg:hidden">
@@ -21,9 +23,9 @@ export default function Header() {
             </div>
           </div>
 
-          <div className="gap-4 items-center hidden md:flex">
+          <div className="hidden items-center gap-4 md:flex">
             <Primary>
-              <span className="text-2xl mr-1">+ </span> Post a job
+              <span className="mr-1 text-2xl">+ </span> Post a job
             </Primary>
             <Primary>Sign in</Primary>
             <CallToAction>Register now</CallToAction>
@@ -35,12 +37,19 @@ export default function Header() {
   );
 }
 
-function Overlay({ isOpen }: { isOpen: boolean }) {
+function Overlay({
+  isOpen,
+  onClick,
+}: {
+  isOpen: boolean;
+  onClick: () => void;
+}) {
   return (
     <div
+      onClick={onClick}
       className={clsx(
-        "absolute w-screen lg:hidden duration-300 delay-75 h-screen transition-opacity opacity-0 bg-black",
-        { "opacity-40": isOpen }
+        "absolute w-screen bg-black transition-all delay-75 duration-300 lg:hidden",
+        { "h-screen opacity-40": isOpen, "h-0 opacity-0 ": !isOpen },
       )}
     />
   );
@@ -50,16 +59,16 @@ function Dropdown({ isOpen }: { isOpen: boolean }) {
   return (
     <nav
       className={clsx(
-        "w-full p-6 transition-all ease-out z-10 h-60 bg-slate-100 absolute lg:hidden",
+        "absolute z-10 h-60 w-full bg-slate-100 p-6 transition-all ease-out lg:hidden",
         {
           "-top-40": !isOpen,
           "top-20": isOpen,
-        }
+        },
       )}
     >
-      <div className="gap-3 items-start flex flex-col">
+      <div className="flex flex-col items-start gap-3">
         <Primary>
-          <span className="text-2xl mr-1">+ </span> Post a job
+          <span className="mr-1 text-2xl">+ </span> Post a job
         </Primary>
         <Primary>Sign in</Primary>
         <CallToAction>Register now</CallToAction>

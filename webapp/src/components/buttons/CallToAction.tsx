@@ -1,8 +1,23 @@
-type CallToActionProps = React.PropsWithChildren;
+import cn from "../../utils/cn";
 
-export default function CallToAction({ children }: CallToActionProps) {
+type CallToActionProps = React.PropsWithChildren &
+  React.ComponentProps<"button"> & {
+    classname?: string;
+  };
+
+export default function CallToAction({
+  children,
+  classname,
+  ...props
+}: CallToActionProps) {
   return (
-    <button className="bg-primary px-4 font-medium py-2 drop-shadow-md rounded text-white">
+    <button
+      {...props}
+      className={cn(
+        "rounded bg-primary px-4 py-2 font-medium text-white drop-shadow-md",
+        classname,
+      )}
+    >
       {children}
     </button>
   );
