@@ -7,9 +7,8 @@ export default function JobSearchInput() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
-    for (const [key, value] of formData.entries()) {
-      console.log(`${key}: ${value}`);
-    }
+    const data = Object.fromEntries(formData.entries());
+    console.log(data);
   };
   return (
     <form
