@@ -15,9 +15,10 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping(("/job"))
-@PreAuthorize("hasRole('EMPLOYEE')")
+@RequestMapping(("/jobs"))
+//@PreAuthorize("hasRole('EMPLOYEE')")
 public class JobController {
+    private final JobService service;
 //    @GetMapping
 //    public ResponseEntity<ArrayList<String>> getJob(@RequestParam String jobId) {
 //        return ResponseEntity
@@ -26,9 +27,9 @@ public class JobController {
 //    }
 
     @GetMapping
-    public ResponseEntity<ArrayList<String>> getJob() {
+    public ResponseEntity<List<Job>> getJobs() {
         return ResponseEntity
                 .ok()
-                .body(new ArrayList<>());
+                .body(service.findAll());
     }
 }

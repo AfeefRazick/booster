@@ -2,10 +2,13 @@ package org.rooster.server;
 
 import org.rooster.server.auth.AuthenticationService;
 import org.rooster.server.auth.RegisterRequestBody;
+import org.rooster.server.job.*;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+
+import java.util.Date;
 
 import static org.rooster.server.user.Role.*;
 
@@ -18,7 +21,8 @@ public class ServerApplication {
 
     @Bean
     public CommandLineRunner commandLineRunner(
-            AuthenticationService service
+            AuthenticationService authenticationService,
+            JobService jobService
     ) {
         return args -> {
             var user = RegisterRequestBody.builder()
@@ -27,14 +31,14 @@ public class ServerApplication {
                     .password("password")
                     .role(USER)
                     .build();
-            System.out.println("User token: " + service.register(user).getAccessToken());
+            System.out.println("User token: " + authenticationService.register(user).getAccessToken());
 
             var admin = RegisterRequestBody.builder()
                     .displayName("Admin")
                     .username("admin")
                     .password("password")
                     .build();
-            System.out.println("Admin token: " + service.register(admin).getAccessToken());
+            System.out.println("Admin token: " + authenticationService.register(admin).getAccessToken());
 
             var employee = RegisterRequestBody.builder()
                     .displayName("Employee")
@@ -42,7 +46,26 @@ public class ServerApplication {
                     .password("password")
                     .role(EMPLOYEE)
                     .build();
-            System.out.println("Employee token: " + service.register(employee).getAccessToken());
+            System.out.println("Employee token: " + authenticationService.register(employee).getAccessToken());
+
+            var job = Job.builder()
+                    .logo("https://rooster.jobs/static/mobile-logo.svg")
+                    .title("Software Engineering Intern")
+                    .companyName("Rooster")
+                    .classification("Information & Communication Technology")
+                    .subClassification("Engineering - Software")
+                    .type(JobType.CONTRACT)
+                    .location("Colombo, Srilanka")
+                    .salary(Salary.builder()
+                            .min(70000)
+                            .max(80000)
+                            .currency("LKR")
+                            .paidEvery(PaidEvery.MONTH)
+                            .build())
+                    .postedDate(new Date())
+                    .companyUrl("rooster.org")
+                    .build();
+            jobService.save(job);
 
         };
     }

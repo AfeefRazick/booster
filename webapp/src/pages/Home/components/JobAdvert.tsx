@@ -3,6 +3,7 @@ import { Job, Salary } from "../../../types/Job";
 import jobTypeIcon from "../../../assets/job-type-icon.svg";
 import locationIcon from "../../../assets/location-icon.svg";
 import verifyIcon from "../../../assets/verify-badge.svg";
+import { capitalize } from "../../../utils/common";
 
 type JobProps = {
   job: Job;
@@ -22,7 +23,7 @@ export default function JobAdvert({ job }: JobProps) {
           </a>
           <a
             href={job.companyUrl}
-            className="text-accent flex text-sm hover:font-semibold hover:underline"
+            className="flex text-sm text-accent hover:font-semibold hover:underline"
           >
             <h6>{job.companyName} </h6>
             <img src={verifyIcon} alt="Verified" />
@@ -35,7 +36,7 @@ export default function JobAdvert({ job }: JobProps) {
       </p>
 
       <div className="flex flex-wrap gap-4 pb-4">
-        <JobInfo icon={<img src={jobTypeIcon} />} text={job.type} />
+        <JobInfo icon={<img src={jobTypeIcon} />} text={capitalize(job.type)} />
         <JobInfo icon={<img src={locationIcon} />} text={job.location} />
 
         <JobInfo

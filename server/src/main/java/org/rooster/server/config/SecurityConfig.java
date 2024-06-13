@@ -5,6 +5,7 @@ import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,10 +20,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableMethodSecurity
 public class SecurityConfig {
     private static final String[] USER_RESTRICTED_URLS = {
-            "/job/**",
-            "/user/**"
     };
     private static final String[] ADMIN_RESTRICTED_URLS = {
+            "/user/**",
             "/admin/**",
     };
 
@@ -40,10 +40,12 @@ public class SecurityConfig {
     };
     private static final String[] WHITE_LIST_URLS = {
             "/auth/**",
+            "/jobs/**",
     };
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final FilterChainExceptionHandler filterChainExceptionHandler;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -65,7 +67,9 @@ public class SecurityConfig {
                                 .permitAll()
                 )
                 .authenticationProvider(authenticationProvider)
-                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(filterChainExceptionHandler, JwtAuthenticationFilter.class);
+
         return http.build();
     }
 }

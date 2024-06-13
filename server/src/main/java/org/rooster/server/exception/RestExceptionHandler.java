@@ -1,12 +1,12 @@
 package org.rooster.server.exception;
 
-import io.jsonwebtoken.security.SignatureException;
+import io.jsonwebtoken.JwtException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Slf4j
 @RestControllerAdvice
@@ -22,20 +22,18 @@ public class RestExceptionHandler {
     // its debatable if i should use the above method to catch jwt filter errors like unsignedex and jwtexpiredex
     // as there may be a best practice way im unable to find
     // another option is to send back the response immediately in the filter instead of the whole exception throwing route
-    @ExceptionHandler(value = {UnauthenticatedException.class})
-    @ResponseStatus(HttpStatus.FORBIDDEN)
-    public ErrorResponseBody handleUnauthorizedUser(Exception ex) {
-        log.error(ex.getCause().getMessage());
-        log.info("hehe");
-
-        return new ErrorResponseBody(ex.getMessage());
+    @ExceptionHandler(value = {JwtException.class})
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    public ErrorResponseBody handleJwtException(Exception ex) {
+        log.error(ex.getMessage());
+        return new ErrorResponseBody("Authentication Token is not valid");
     }
 
-    @ExceptionHandler(value = {UnauthorizedException.class})
-    @ResponseStatus(HttpStatus.UNAUTHORIZED)
-    public ErrorResponseBody handleUnauthenticatedUser(Exception ex) {
-        log.error(ex.getCause().getMessage());
-        log.info("hehe");
-        return new ErrorResponseBody(ex.getMessage());
+    // im unable to catch this forbidden error, the response may be sent directly from the filter
+    @ExceptionHandler(value = {UnauthorizedException.class, HttpClientErrorException.Forbidden.class})
+    @ResponseStatus(HttpStatus.FORBIDDEN)
+    public ErrorResponseBody handleUnauthorizedUser(Exception ex) {
+        log.error(ex.getMessage());
+        return new ErrorResponseBody("User does not have the required permissions to perform this action");
     }
 }

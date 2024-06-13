@@ -47,31 +47,26 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         final String authToken = authHeader.substring(7);
+        final String username = jwtService.extractUsername(authToken);
 
-        try {
-            final String username = jwtService.extractUsername(authToken);
-            if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-                // the line below would mean on every secured request the database is called to get the user details
-                // this seems unnecessary, and seems to be useful only in identifying an access token that has not expired,
-                // but user is not authorised by other means, like account deletion, logout etc. (these things can be handled client side, but relying on client is bad
-                // also this edge case is not even handled here, meaning its unnecessary
-                // instead, we can simply store the authorities in the access token
-                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-                UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
-                        userDetails,
-                        null,
-                        userDetails.getAuthorities()
-                );
-                log.info(userDetails.getUsername());
-                authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
+            // the line below would mean on every secured request the database is called to get the user details
+            // this seems unnecessary, and seems to be useful only in identifying an access token that has not expired,
+            // but user is not authorised by other means, like account deletion, logout etc. (these things can be handled client side, but relying on client is bad
+            // also this edge case is not even handled here, meaning its unnecessary
+            // instead, we can simply store the authorities in the access token
+            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+            UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(
+                    userDetails,
+                    null,
+                    userDetails.getAuthorities()
+            );
+            log.info(userDetails.getUsername());
+            authentication.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-            }
-            filterChain.doFilter(request, response);
-        } catch (ExpiredJwtException ex) {
-            throw new UnauthorizedException("Authentication Token expired", ex);
-        } catch (UnsupportedJwtException | SignatureException ex) {
-            throw new UnauthenticatedException("Authentication Token is not valid", ex);
         }
+        filterChain.doFilter(request, response);
+
     }
 }
