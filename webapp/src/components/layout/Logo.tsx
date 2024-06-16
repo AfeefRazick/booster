@@ -1,12 +1,27 @@
 import rooster from "../../assets/rooster.svg";
+import cn from "../../utils/cn";
 
-export default function Logo() {
+type LogoProps = React.PropsWithChildren &
+  React.ComponentProps<"h2"> & {
+    responsive?: boolean;
+    className?: string;
+  };
+
+export default function Logo({ responsive, className }: LogoProps) {
   return (
-    <div className="flex items-center justify-center">
+    <a href="/jobs" className="flex items-center justify-center">
       <img src={rooster} />
-      <h2 className="ml-0.5 mt-0.5 hidden text-3xl font-semibold lg:block">
+      <h2
+        className={cn(
+          "ml-0.5 mt-0.5 font-semibold",
+          {
+            "hidden lg:block": responsive,
+          },
+          className,
+        )}
+      >
         ROOSTER
       </h2>
-    </div>
+    </a>
   );
 }

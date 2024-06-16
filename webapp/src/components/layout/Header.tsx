@@ -14,10 +14,10 @@ export default function Header() {
     <>
       <Overlay isOpen={isOpen} onClick={closeDropdown} />
 
-      <header className="relative flex h-20 w-full items-center justify-center shadow">
+      <header className="relative flex h-20 w-full items-center justify-center shadow-sm">
         <nav className="z-20 flex h-full w-full items-center justify-between bg-white px-6 sm:px-[5%]">
           <div className="flex items-center">
-            <Logo />
+            <Logo responsive={true} className="text-[26px]" />
             <div className="lg:hidden">
               <Hamburger toggled={isOpen} toggle={setIsOpen} size={20} />
             </div>

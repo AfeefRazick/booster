@@ -3,7 +3,7 @@ import { Job, Salary } from "../../../types/Job";
 import jobTypeIcon from "../../../assets/job-type-icon.svg";
 import locationIcon from "../../../assets/location-icon.svg";
 import verifyIcon from "../../../assets/verify-badge.svg";
-import { capitalize } from "../../../utils/common";
+import { capitalize, dateToStringMMDDYYYY } from "../../../utils/common";
 
 type JobProps = {
   job: Job;
@@ -16,7 +16,7 @@ export default function JobAdvert({ job }: JobProps) {
         <img src={job.logo} className="mr-5 h-11 w-11" />
         <div className="flex flex-col items-start gap-3 font-medium">
           <a
-            href={job.jobUrl}
+            href={`rooster.jobs/job/${job.id}`}
             className="text-lg leading-none text-stone-800 decoration-1 hover:font-semibold hover:underline"
           >
             <h5>{job.title}</h5>
@@ -45,7 +45,9 @@ export default function JobAdvert({ job }: JobProps) {
         />
       </div>
 
-      <p className="text-sm text-stone-400">Posted on {job.postedDate}</p>
+      <p className="text-sm text-stone-400">
+        Posted on {dateToStringMMDDYYYY(new Date(job.postedDate))}
+      </p>
     </div>
   );
 }

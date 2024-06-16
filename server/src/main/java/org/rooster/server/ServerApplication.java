@@ -48,7 +48,7 @@ public class ServerApplication {
                     .build();
             System.out.println("Employee token: " + authenticationService.register(employee).getAccessToken());
 
-            var job = Job.builder()
+            var job1 = Job.builder()
                     .logo("https://rooster.jobs/static/mobile-logo.svg")
                     .title("Software Engineering Intern")
                     .companyName("Rooster")
@@ -65,8 +65,28 @@ public class ServerApplication {
                     .postedDate(new Date())
                     .companyUrl("rooster.org")
                     .build();
-            jobService.save(job);
+            jobService.save(job1);
 
+            for (int i = 0; i < 40; i++) {
+                var job2 = Job.builder()
+                        .logo("https://rooster-content-s3.s3.amazonaws.com/companyLogos/logo_1610022110673_ig_logoTESTFINAL_UPLOAD_ARALIYA_IG.jpg")
+                        .title(i + "Accounts Executive / Bookkeeper in a Export Business")
+                        .companyName("D&R Exports (Pty) Ltd")
+                        .classification("Accounting")
+                        .subClassification("Accounts Officers/Clerks")
+                        .type(JobType.FULL_TIME)
+                        .location("Wellampitiya, Sri Lanka")
+                        .salary(Salary.builder()
+                                .min(40000)
+                                .max(50000)
+                                .currency("LKR")
+                                .paidEvery(PaidEvery.MONTH)
+                                .build())
+                        .postedDate(new Date())
+                        .companyUrl("example.com")
+                        .build();
+                jobService.save(job2);
+            }
         };
     }
 }

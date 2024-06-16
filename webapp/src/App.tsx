@@ -2,9 +2,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Provider from "./Provider";
 import Layout from "./components/layout/Layout";
 import Home from "./pages/Home/Home";
-import Dashboard from "./pages/Dashboard/Dashboard";
-import Jobs from "./pages/Jobs/Jobs";
 import CreateJob from "./pages/CreateJob/CreateJob";
+import CreateAccount from "./pages/CreateAccount/CreateAccount";
+import AdminLayout from "./pages/AdminLayout/AdminLayout";
+import Jobs from "./pages/Jobs/Jobs";
 
 const router = createBrowserRouter([
   {
@@ -15,8 +16,8 @@ const router = createBrowserRouter([
         element: <Home />,
       },
       {
-        path: "/dashboard",
-        element: <Dashboard />,
+        path: "/admin",
+        element: <AdminLayout />,
         children: [
           {
             path: "hire",
@@ -29,6 +30,7 @@ const router = createBrowserRouter([
       },
     ],
   },
+  { path: "/create-account", element: <CreateAccount /> },
 ]);
 
 function App() {

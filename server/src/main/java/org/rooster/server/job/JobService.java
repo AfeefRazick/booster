@@ -1,6 +1,9 @@
 package org.rooster.server.job;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -15,7 +18,8 @@ public class JobService {
         repository.save(job);
     }
 
-    public List<Job> findAll() {
-        return repository.findAll();
+    public Page<Job> findAll(int pageNo, int size) {
+        Page<Job> jobPage = repository.findAll(PageRequest.of(pageNo, size));
+        return jobPage;
     }
 }
