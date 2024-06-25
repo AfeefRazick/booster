@@ -44,7 +44,7 @@ export default function JobSearchInput() {
 
         <CallToAction
           type="submit"
-          classname="lg:w-max md:col-span-2 mt-4 md:mt-0 col-span-1 lg:col-span-1"
+          className="lg:w-max md:col-span-2 mt-4 md:mt-0 col-span-1 lg:col-span-1"
         >
           Search
         </CallToAction>

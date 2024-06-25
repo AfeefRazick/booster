@@ -6,7 +6,7 @@ spring:
   application:
     name: server
   datasource:
-    url: jdbc:postgresql://localhost:5432/rooster
+    url: jdbc:postgresql://localhost:5432/booster
     username: postgres
     password: postgres
   jpa:
