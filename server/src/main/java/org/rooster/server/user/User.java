@@ -24,8 +24,11 @@ public class User implements UserDetails {
     private String displayName;
 
     @Column(unique = true)
-    private String username;
+    private String email;
     private String password;
+    private String company;
+    private String phone;
+
 
     private Role role;
     private String refreshToken;
@@ -36,6 +39,12 @@ public class User implements UserDetails {
 //    private boolean accountNonLocked;
 //    private boolean credentialsNonExpired;
 //    private boolean enabled;
+
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

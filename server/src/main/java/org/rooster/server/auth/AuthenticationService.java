@@ -22,14 +22,16 @@ public class AuthenticationService {
     private final AuthenticationManager authenticationManager;
 
     public AuthenticationResponseBody register(RegisterRequestBody body) {
-        if (userRepository.findByUsername(body.getUsername()).isPresent())
+        if (userRepository.findByEmail(body.getEmail()).isPresent())
             throw new ResponseStatusException(HttpStatus.CONFLICT);
 
         User user = User.builder()
                 .displayName(body.getDisplayName())
-                .username(body.getUsername())
+                .email(body.getEmail())
                 .password(passwordEncoder.encode(body.getPassword()))
                 .role(body.getRole())
+                .company(body.getCompany())
+                .phone(body.getPhone())
                 .build();
         User savedUser = userRepository.save(user);
         String accessToken = jwtService.generateAccessToken(savedUser);
@@ -49,7 +51,7 @@ public class AuthenticationService {
     public AuthenticationResponseBody login(LoginRequestBody body) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
-                        body.getUsername(),
+                        body.getEmail(),
                         body.getPassword()
                 )
         );
@@ -77,7 +79,7 @@ public class AuthenticationService {
         if (jwtService.isExpired(refreshToken)) throw new ResponseStatusException(HttpStatus.FORBIDDEN);
         String username = jwtService.extractUsername(refreshToken);
 
-        User user = userRepository.findByUsername(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
+        User user = userRepository.findByEmail(username).orElseThrow(() -> new ResponseStatusException(HttpStatus.FORBIDDEN));
 
         String accessToken = jwtService.generateAccessToken(user);
 

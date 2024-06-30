@@ -12,7 +12,9 @@ import org.rooster.server.user.Role;
 @AllArgsConstructor
 public class RegisterRequestBody {
     private String displayName;
-    private String username;
+    private String email;
     private String password;
+    private String company;
+    private String phone;
     private Role role;
 }

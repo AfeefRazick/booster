@@ -26,25 +26,32 @@ public class ServerApplication {
     ) {
         return args -> {
             var user = RegisterRequestBody.builder()
-                    .displayName("User")
-                    .username("user")
+                    .displayName("User 1")
+                    .email("user@example.com")
                     .password("password")
                     .role(USER)
+                    .company("LOLC")
+                    .phone("94573494934")
                     .build();
             System.out.println("User token: " + authenticationService.register(user).getAccessToken());
 
             var admin = RegisterRequestBody.builder()
-                    .displayName("Admin")
-                    .username("admin")
+                    .displayName("Admin 1")
+                    .email("admin@example.com")
                     .password("password")
+                    .role(ADMIN)
+                    .company("LOLC")
+                    .phone("94573494934")
                     .build();
             System.out.println("Admin token: " + authenticationService.register(admin).getAccessToken());
 
             var employee = RegisterRequestBody.builder()
-                    .displayName("Employee")
-                    .username("employee")
+                    .displayName("Employee 1")
+                    .email("employee@example.com")
                     .password("password")
                     .role(EMPLOYEE)
+                    .company("LOLC")
+                    .phone("94573494934")
                     .build();
             System.out.println("Employee token: " + authenticationService.register(employee).getAccessToken());
 

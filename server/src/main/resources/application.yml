@@ -1,6 +1,9 @@
 server:
   servlet:
     context-path: /api/v1
+    session:
+      cookie:
+        secure: false
 
 spring:
   application:

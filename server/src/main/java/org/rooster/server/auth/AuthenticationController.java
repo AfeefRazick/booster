@@ -1,5 +1,6 @@
 package org.rooster.server.auth;
 
+import jakarta.servlet.http.Cookie;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -25,9 +26,10 @@ public class AuthenticationController {
         AuthenticationResponseBody responseBody = service.register(requestBody);
         String refreshToken = responseBody.getAccessToken();
         responseBody.setRefreshToken(null);
+
         return ResponseEntity
                 .ok()
-                .header(HttpHeaders.SET_COOKIE, refreshToken)
+                .header(HttpHeaders.SET_COOKIE,"refresh-token="+ refreshToken+"; HttpOnly; Secure;")
                 .body(responseBody);
     }
 
